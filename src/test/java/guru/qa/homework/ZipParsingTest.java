@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import java.nio.charset.StandardCharsets;
 
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -62,10 +61,7 @@ public class ZipParsingTest {
                                     new InputStreamReader(zip, StandardCharsets.UTF_8)
                             ).withCSVParser(new CSVParserBuilder().withSeparator(';').build()).build()
                     ) {
-
                         data = csvReader.readAll();
-
-                        System.out.println(data.get(0));
 
                         Assertions.assertEquals(11, data.size());
                         Assertions.assertArrayEquals(
