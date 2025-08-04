@@ -1,0 +1,29 @@
+[
+  {
+    "fullName": "John Smith",
+    "age": 32,
+    "appearance": "Height: 180 cm, Hair: Brown, Eyes: Blue",
+    "contacts": "Phone: +1 (555) 123-4567, Email: john.smith@example.com",
+    "work": "Software Engineer at TechCorp",
+    "hobbies": "Photography",
+    "insurance": true
+  },
+  {
+    "fullName": "Emily Johnson",
+    "age": 28,
+    "appearance": "Height: 165 cm, Hair: Blonde, Eyes: Green",
+    "contacts": "Phone: +1 (555) 987-6543, Email: emily.j@example.com",
+    "work": "Marketing Manager at AdAgency",
+    "hobbies": "Yoga",
+    "insurance": true
+  },
+  {
+    "fullName": "Michael Brown",
+    "age": 45,
+    "appearance": "Height: 175 cm, Hair: Black, Eyes: Brown",
+    "contacts": "Phone: +1 (555) 456-7890, Email: michael.b@example.com",
+    "work": "Doctor at City Hospital",
+    "hobbies": "Chess",
+    "insurance": false
+  }
+]
