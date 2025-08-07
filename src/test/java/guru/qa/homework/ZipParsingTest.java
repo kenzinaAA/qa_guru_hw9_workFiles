@@ -6,8 +6,10 @@ import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
 import java.nio.charset.StandardCharsets;
 
 import java.io.InputStreamReader;
@@ -17,49 +19,58 @@ import java.util.zip.ZipInputStream;
 
 public class ZipParsingTest {
     private final ClassLoader cl = ZipParsingTest.class.getClassLoader();
+    private Boolean fileFound;
+
+    @BeforeEach
+    void resetOptions(){
+        fileFound = false;
+    }
 
     @DisplayName("Проверка наличия xlsx файла в zip архиве и его чтение")
     @Test
     void xlsxFindAndReadInZipFile () throws Exception {
-        try (ZipInputStream zip = new ZipInputStream(cl.getResourceAsStream("orgStructure.zip")
-        )){
+        try (ZipInputStream zip = new ZipInputStream(cl.getResourceAsStream("orgStructure.zip"))){
             ZipEntry entry;
             while ((entry = zip.getNextEntry()) != null) {
                 if (entry.getName().endsWith(".xlsx")) {
                     XLS xlsx = new XLS(zip);
+                    fileFound = true;
                     String findValue = xlsx.excel.getSheetAt(0).getRow(3).getCell(6).getStringCellValue();
                     Assertions.assertTrue(findValue.contains("nbuchelnikov@company.ru"));
                 }
             }
         }
+        Assertions.assertTrue(fileFound, "Нужный файл не найден в архиве");
     }
+
     @DisplayName("Проверка наличия pdf файла в zip архиве и его чтение")
     @Test
     void pdfFindAndReadInZipFile () throws Exception {
-        try (ZipInputStream zip = new ZipInputStream(cl.getResourceAsStream("orgStructure.zip")
-        )){
+        try (ZipInputStream zip = new ZipInputStream(cl.getResourceAsStream("orgStructure.zip"))){
             ZipEntry entry;
             while ((entry = zip.getNextEntry()) != null) {
                 if (entry.getName().endsWith(".pdf")) {
                     PDF pdf = new PDF(zip);
+                    fileFound = true;
                     Assertions.assertEquals("contacts.xls",pdf.title);
                 }
             }
         }
+        Assertions.assertTrue(fileFound, "Нужный файл не найден в архиве");
     }
+
     @DisplayName("Проверка наличия csv файла в zip архиве и его чтение")
     @Test
     void csvFindAndReadInZipFile () throws Exception {
-        try (ZipInputStream zip = new ZipInputStream(cl.getResourceAsStream("orgStructure.zip")
-        )){
+        try (ZipInputStream zip = new ZipInputStream(cl.getResourceAsStream("orgStructure.zip"))){
             ZipEntry entry;
             while ((entry = zip.getNextEntry()) != null) {
                 if (entry.getName().endsWith(".csv")) {
                     List<String[]> data;
-                    try (
-                            CSVReader csvReader = new CSVReaderBuilder(
-                                    new InputStreamReader(zip, StandardCharsets.UTF_8)
-                            ).withCSVParser(new CSVParserBuilder().withSeparator(';').build()).build()
+                    fileFound = true;
+                    try (CSVReader csvReader = new CSVReaderBuilder(
+                            new InputStreamReader(zip, StandardCharsets.UTF_8))
+                            .withCSVParser(new CSVParserBuilder().withSeparator(';').build()).build()
                     ) {
                         data = csvReader.readAll();
 
@@ -76,5 +87,8 @@ public class ZipParsingTest {
                 }
             }
         }
-    }}
+        Assertions.assertTrue(fileFound, "Нужный файл не найден в архиве");
+    }
+
+}
 
